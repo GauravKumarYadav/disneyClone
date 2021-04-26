@@ -5,37 +5,37 @@ import Slider from "react-slick";
 
 const ImgSlider = (props) => {
 
-    let settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-    };
+  let settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+  };
 
-    const cauroselImages = [
-        "/images/slider-badging.jpg",
-        "/images/slider-scale.jpg",
-        "/images/slider-badag.jpg",
-        "/images/slider-scales.jpg",
-    ];
+  const cauroselImages = [
+    { img: "/images/slider-badging.jpg" },
+    { img: "/images/slider-scale.jpg" },
+    { img: "/images/slider-badag.jpg" },
+    { img: "/images/slider-scales.jpg" },
+  ];
 
-    return (
-        <Carousel {...settings}>
-            {
-                cauroselImages.map((item) => {
-                    return (
-                        <Wrap key={item} >
-                            <a>
-                                <img src={item} alt="" />
-                            </a>
-                        </Wrap>
-                    )
-                })
-            }
-        </Carousel>
-    );
+  return (
+    <Carousel {...settings}>
+      {
+        cauroselImages.map((item) => {
+          return (
+            <Wrap key={item.img} >
+              <a href="#" >
+                <img src={item.img} alt="" />
+              </a>
+            </Wrap>
+          )
+        })
+      }
+    </Carousel>
+  );
 };
 
 const Carousel = styled(Slider)`

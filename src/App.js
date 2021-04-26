@@ -3,6 +3,7 @@ import './styles/App.css';
 import Login from './pages/Login';
 import Header from './components/Header';
 import Home from './pages/Home';
+import Detail from './pages/Detail';
 
 const App = () => {
 	return (
@@ -15,6 +16,9 @@ const App = () => {
 					</Route>
 					<Route path="/home" >
 						<Home />
+					</Route>
+					<Route path="/detail/:type/:id" >
+						<Detail />
 					</Route>
 				</Switch>
 			</Router>
