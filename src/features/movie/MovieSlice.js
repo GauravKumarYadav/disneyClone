@@ -9,6 +9,7 @@ const initialState = {
     romantic: null,
     netflixOriginals: null,
     topRated: null,
+    movieDetail: null,
 }
 
 const movieSlice = createSlice({
@@ -25,10 +26,13 @@ const movieSlice = createSlice({
             state.netflixOriginals = action.payload.netflixOriginals;
             state.topRated = action.payload.topRated;
         },
+        setMovieDetail: (state, action) => {
+            state.movieDetail = action.payload.movieDetail;
+        },
     },
 });
 
-export const { setMovies } = movieSlice.actions;
+export const { setMovies, setMovieDetail } = movieSlice.actions;
 
 export const selectTrending = state => state.movie.trending;
 export const selectActionMovie = state => state.movie.actionMovie;
@@ -38,5 +42,6 @@ export const selectHorror = state => state.movie.horror;
 export const selectRomantic = state => state.movie.romantic;
 export const selectNetflix = state => state.movie.netflixOriginals;
 export const selectTopRated = state => state.movie.topRated;
+export const selectMovieDetail = state => state.movie.movieDetail;
 
 export default movieSlice.reducer;

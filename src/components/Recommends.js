@@ -1,16 +1,15 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     selectActionMovie, selectComedy, selectDocumentries, selectHorror, selectNetflix,
-    selectRomantic, selectTopRated, selectTrending
+    selectRomantic, selectTopRated, selectTrending,
 } from '../features/movie/MovieSlice'
-import { useEffect, useState } from 'react';
-import { selectUserName } from '../features/users/userSlice';
+import { setMovieDetail } from '../features/movie/MovieSlice';
 
 const Recommends = () => {
-    const userName = useSelector(selectUserName);
 
+    const dispatch = useDispatch();
     const actionMovie = useSelector(selectActionMovie);
     const comedy = useSelector(selectComedy);
     const documentries = useSelector(selectDocumentries);
@@ -20,9 +19,6 @@ const Recommends = () => {
     const topRated = useSelector(selectTopRated);
     const trending = useSelector(selectTrending);
 
-    useEffect(() => {
-
-    }, [userName]);
 
     const movies = [
         {
@@ -72,7 +68,7 @@ const Recommends = () => {
                                 {
                                     item.type?.map((movie, key) => {
                                         return (
-                                            <Wrap key={key} >
+                                            <Wrap key={key} onClick={() => { dispatch(setMovieDetail({ movieDetail: movie })) }} >
                                                 <Link to={'/detail/' + item.title + '/' + movie?.id} >
                                                     <img
                                                         src={`${baseURL}${movie?.backdrop_path}`}

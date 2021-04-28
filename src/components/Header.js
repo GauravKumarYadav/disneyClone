@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -9,12 +8,39 @@ import {
 	setUserLoginDetails,
 	setSignOutState,
 } from "../features/users/userSlice";
+import requests from '../config/requests';
+import axios from '../config/axios';
 
-const Header = () => {
+import { useEffect, useState } from 'react';
+import { setMovies } from '../features/movie/MovieSlice';
+
+
+const Header = (props) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const userName = useSelector(selectUserName);
 	const userPhoto = useSelector(selectUserPhoto);
+
+	const userName = useSelector(selectUserName);
+
+	const [trendingArr, setTrendingArr] = useState([]);
+	const [actionMovieArr, setActionMovieArr] = useState([]);
+	const [comedyArr, setComedyArr] = useState([]);
+	const [documentriesArr, setDocumentriesArr] = useState([]);
+	const [horrorArr, setHorrorArr] = useState([]);
+	const [romanticArr, setRomanticArr] = useState([]);
+	const [netflixOriginalsArr, setNetflix] = useState([]);
+	const [topRatedArr, setTopRatedArr] = useState([]);
+
+	const fetchMoviesReqs = [
+		requests.fetchActionMovie,
+		requests.fetchComedyMovie,
+		requests.fetchDocumentries,
+		requests.fetchHorrorMovie,
+		requests.fetchRomanticMovie,
+		requests.fetchTopRated,
+		requests.fetchTrending,
+		requests.fetchNetFlixOriginals,
+	];
 
 	useEffect(() => {
 		auth.onAuthStateChanged(async (user) => {
@@ -23,7 +49,59 @@ const Header = () => {
 				history.push("/home");
 			}
 		});
-	}, [userName, history,]);
+		const fetchData = () => {
+			fetchMoviesReqs.map(async (fetchURL, key) => {
+				let movieObj = [];
+				const request = await axios.get(fetchURL);
+				request.data.results.forEach((movie) => {
+					if (movie.backdrop_path !== null && movie.backdrop_path !== "") {
+						movieObj = [...movieObj, movie];
+					}
+				})
+				movieObj.splice(4);
+				// console.log(movieObj);
+				switch (key) {
+					case 0:
+						setActionMovieArr(movieObj)
+						break;
+					case 1:
+						setComedyArr(movieObj)
+						break;
+					case 2:
+						setDocumentriesArr(movieObj)
+						break;
+					case 3:
+						setHorrorArr(movieObj)
+						break;
+					case 4:
+						setRomanticArr(movieObj)
+						break;
+					case 5:
+						setTopRatedArr(movieObj)
+						break;
+					case 6:
+						setTrendingArr(movieObj)
+						break;
+					case 7:
+						setNetflix(movieObj)
+						break;
+					default:
+						break;
+				}
+			});
+		}
+		dispatch(setMovies({
+			actionMovie: actionMovieArr,
+			comedy: comedyArr,
+			documentries: documentriesArr,
+			horror: horrorArr,
+			netflixOriginals: netflixOriginalsArr,
+			romantic: romanticArr,
+			topRated: topRatedArr,
+			trending: trendingArr,
+		}))
+		fetchData();
+	}, [userName]);
 
 	const handleAuth = () => {
 		if (!userName) {
@@ -126,6 +204,7 @@ const Logo = styled.a`
   max-height: 70px;
   font-size: 0;
   display: inline-block;
+
   img {
     display: block;
     width: 100%;
@@ -143,16 +222,19 @@ const NavMenu = styled.div`
   position: relative;
   margin-right: auto;
   margin-left: 25px;
+
   a {
     display: flex;
     align-items: center;
     padding: 0 12px;
+
     img {
       height: 20px;
       min-width: 20px;
       width: 20px;
       z-index: auto;
     }
+
     span {
       color: rgb(249, 249, 249);
       font-size: 13px;
@@ -161,6 +243,7 @@ const NavMenu = styled.div`
       padding: 2px 0px;
       white-space: nowrap;
       position: relative;
+
       &:before {
         background-color: rgb(249, 249, 249);
         border-radius: 0px 0px 4px 4px;
@@ -178,6 +261,7 @@ const NavMenu = styled.div`
         width: auto;
       }
     }
+
     &:hover {
       span:before {
         transform: scaleX(1);
@@ -186,9 +270,10 @@ const NavMenu = styled.div`
       }
     }
   }
-  @media (max-width: 768px) {
+
+  /* @media (max-width: 768px) {
     display: none;
-  }
+  } */
 `;
 
 const Login = styled.a`
@@ -199,6 +284,7 @@ const Login = styled.a`
   border: 1px solid #f9f9f9;
   border-radius: 4px;
   transition: all 0.2s ease 0s;
+
   &:hover {
     background-color: #f9f9f9;
     color: #000;
@@ -233,11 +319,13 @@ const SignOut = styled.div`
   cursor: pointer;
   align-items: center;
   justify-content: center;
+
   ${UserImg} {
     border-radius: 50%;
     width: 100%;
     height: 100%;
   }
+
   &:hover {
     ${DropDown} {
       opacity: 1;
@@ -245,7 +333,5 @@ const SignOut = styled.div`
     }
   }
 `;
-
-
 
 export default Header;

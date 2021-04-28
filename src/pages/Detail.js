@@ -1,125 +1,48 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+
 import styled from "styled-components";
 import { useSelector } from 'react-redux'
-import {
-    selectActionMovie, selectComedy, selectDocumentries, selectHorror, selectNetflix,
-    selectRomantic, selectTopRated, selectTrending
-} from '../features/movie/MovieSlice';
+import { selectMovieDetail } from '../features/movie/MovieSlice';
 
 const Detail = () => {
-    const { type, id } = useParams();
-    const [movieData, setMovieData] = useState({});
+	const movieData = useSelector(selectMovieDetail);
+	console.log(movieData);
 
-    const actionMovie = useSelector(selectActionMovie);
-    const comedy = useSelector(selectComedy);
-    const documentries = useSelector(selectDocumentries);
-    const horror = useSelector(selectHorror);
-    const originals = useSelector(selectNetflix);
-    const romantic = useSelector(selectRomantic);
-    const topRated = useSelector(selectTopRated);
-    const trending = useSelector(selectTrending);
+	const baseURL = 'https://image.tmdb.org/t/p/original/';
 
-    switch (type) {
-        case "Trending Movies":
-            trending.forEach((movie) => {
-                if (movie.id == id) {
-                    console.log(movie);
-                    setMovieData(movie);
-                }
-            });
-            break;
-        case "Documentries":
-            documentries.forEach((movie) => {
-                if (movie.id == id) {
-                    setMovieData(movie);
-                }
-            });
-            break;
-        case "Horror Movies":
-            horror.forEach((movie) => {
-                if (movie.id == id) {
-                    setMovieData(movie);
-                }
-            });
-            break;
-        case "Romantic Movies":
-            romantic.forEach((movie) => {
-                if (movie.id == id) {
-                    setMovieData(movie);
-                }
-            });
-            break;
-        case "Comedy Movies":
-            comedy.forEach((movie) => {
-                if (movie.id == id) {
-                    setMovieData(movie);
-                }
-            });
-            break;
-        case "Originals":
-            originals.forEach((movie) => {
-                if (movie.id == id) {
-                    setMovieData(movie);
-                }
-            });
-            break;
-        case "Top Rated Movies":
-            topRated.forEach((movie) => {
-                if (movie.id == id) {
-                    setMovieData(movie);
-                }
-            });
-            break;
-        case "Action Movies":
-            actionMovie.forEach((movie) => {
-                if (movie.id == id) {
-                    setMovieData(movie);
-                }
-            });
-            break;
-        default:
-            break;
-    }
+	return (
+		<Container>
+			<Background>
+				<img alt={movieData.name} src={`${baseURL}${movieData?.backdrop_path}`} />
+			</Background>
+			<ImageTitle>
+				{/* <img alt={movieData.name} src={`${baseURL}${movieData?.poster_path}`} /> */}
+			</ImageTitle>
+			<ContentMeta>
+				<Controls>
+					<Player>
+						<img src="/images/play-icon-black.png" alt="" />
+						<span>Play</span>
+					</Player>
+					<Trailer>
+						<img src="/images/play-icon-white.png" alt="" />
+						<span>Trailer</span>
+					</Trailer>
+					<AddList>
+						<span />
+						<span />
+					</AddList>
+					<GroupWatch>
+						<div>
+							<img src="/images/group-icon.png" alt="" />
+						</div>
+					</GroupWatch>
+				</Controls>
+				<SubTitle>{movieData.original_title + ' ⦿ ' + movieData.release_date + ' ⦿ ' + ' ⭐ ' + movieData.vote_average + ' /10'}</SubTitle>
 
-
-    return (
-        <Container>
-            <Background>
-                <img
-                    alt={movieData.name}
-                    src={movieData.backdrop_path} />
-            </Background>
-
-            <ImageTitle>
-                {/* <img alt={detailData.title} src={detailData.titleImg} /> */}
-            </ImageTitle>
-            <ContentMeta>
-                <Controls>
-                    <Player>
-                        <img src="/images/play-icon-black.png" alt="" />
-                        <span>Play</span>
-                    </Player>
-                    <Trailer>
-                        <img src="/images/play-icon-white.png" alt="" />
-                        <span>Trailer</span>
-                    </Trailer>
-                    <AddList>
-                        <span />
-                        <span />
-                    </AddList>
-                    <GroupWatch>
-                        <div>
-                            <img src="/images/group-icon.png" alt="" />
-                        </div>
-                    </GroupWatch>
-                </Controls>
-                <SubTitle>{movieData.name + ' ⦿ ' + movieData.first_air_date + ' ⦿ ' + movieData.first_air_date}</SubTitle>
-
-                <Description>{movieData.overview}</Description>
-            </ContentMeta>
-        </Container>
-    );
+				<Description>{movieData.overview}</Description>
+			</ContentMeta>
+		</Container>
+	);
 };
 
 const Container = styled.div`
