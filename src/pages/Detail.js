@@ -10,7 +10,7 @@ import { useState } from "react";
 const Detail = () => {
 	const movieData = useSelector(selectMovieDetail);
 	console.log(movieData);
-	const [buttonTitle, setButtonTitle] = useState('Play');
+	const [icon, setIcon] = useState('play');
 	const [trailerURL, setTrailerURL] = useState("");
 
 	const baseURL = 'https://image.tmdb.org/t/p/original/';
@@ -26,13 +26,14 @@ const Detail = () => {
 	const handleClick = (movie) => {
 		if (trailerURL) {
 			setTrailerURL("");
-			setButtonTitle("Play")
+			setIcon("play");
+
 		} else {
 			movieTrailer(movie?.title || movie?.name || movie?.original_name || "").then((url) => {
 				const urlParams = new URLSearchParams(new URL(url).search);
 				setTrailerURL(urlParams.get("v"));
 				console.log(trailerURL);
-				setButtonTitle("Hide");
+				setIcon("pause");
 			}).catch((error) => {
 				alert("No Trailer Found on Youtube");
 			});
@@ -54,12 +55,12 @@ const Detail = () => {
 			}
 			<ContentMeta>
 				<Controls>
-					<Player onClick={() => { handleClick(movieData) }} >
+					<Player onClick={() => { alert('Click on Trailer Button') }} >
 						<img src="/images/play-icon-black.png" alt="" />
-						<span>{buttonTitle}</span>
+						<span>Play</span>
 					</Player>
-					<Trailer>
-						<img src="/images/play-icon-white.png" alt="" />
+					<Trailer onClick={() => { handleClick(movieData) }} >
+						<img src={"/images/" + icon + '-icon-white.png'} alt="" />
 						<span>Trailer</span>
 					</Trailer>
 					<AddList>
