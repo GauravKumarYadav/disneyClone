@@ -1,15 +1,27 @@
 
 import styled from "styled-components";
-import { useSelector } from 'react-redux'
-import { selectMovieDetail } from '../features/movie/MovieSlice';
 import movieTrailer from 'movie-trailer';
 import YouTube from 'react-youtube';
 import { useState } from "react";
+import { useParams } from "react-router";
+import { useEffect } from "react";
+import axios from '../config/axios';
 
 
 const Detail = () => {
-	const movieData = useSelector(selectMovieDetail);
-	console.log(movieData);
+	const { id } = useParams();
+	const [movieData, setMovieData] = useState({});
+
+	const API_KEY = "fcb06c587941e4961a1e48b99112a8a4";
+
+	useEffect(() => {
+		const fetchMovieDetail = async () => {
+			const request = await axios.get(`/movie/${id}?api_key=${API_KEY}&language=en-US`);
+			setMovieData(request.data);
+		}
+		fetchMovieDetail();
+	}, [id])
+
 	const [icon, setIcon] = useState('play');
 	const [trailerURL, setTrailerURL] = useState("");
 
@@ -98,7 +110,6 @@ const Background = styled.div`
 	top: 0px;
 	z-index: -1;
 	img {
-		object-fit:contain;
 		width: 100vw;
 		height: 100vh;
 		@media (max-width: 768px) {
