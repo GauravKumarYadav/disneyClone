@@ -69,7 +69,7 @@ const Recommends = () => {
                                     item.type?.map((movie, key) => {
                                         return (
                                             <Wrap key={key} onClick={() => { dispatch(setMovieDetail({ movieDetail: movie })) }} >
-                                                <Link to={'/detail/' + item.title + '/' + movie?.id} >
+                                                <Link to={'/detail/' + movie?.id} >
                                                     <img
                                                         src={`${baseURL}${movie?.backdrop_path}`}
                                                         alt={movie?.name}

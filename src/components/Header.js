@@ -2,15 +2,9 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { auth, provider } from "../config/firebase";
-import {
-	selectUserName,
-	selectUserPhoto,
-	setUserLoginDetails,
-	setSignOutState,
-} from "../features/users/userSlice";
+import { selectUserName, selectUserPhoto, setUserLoginDetails, setSignOutState, } from "../features/users/userSlice";
 import requests from '../config/requests';
 import axios from '../config/axios';
-
 import { useEffect, useState } from 'react';
 import { setMovies } from '../features/movie/MovieSlice';
 
