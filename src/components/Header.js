@@ -16,11 +16,11 @@ import { setMovies } from '../features/movie/MovieSlice';
 
 
 const Header = (props) => {
-	const dispatch = useDispatch();
 	const history = useHistory();
 	const userPhoto = useSelector(selectUserPhoto);
 
 	const userName = useSelector(selectUserName);
+	const dispatch = useDispatch();
 
 	const [trendingArr, setTrendingArr] = useState([]);
 	const [actionMovieArr, setActionMovieArr] = useState([]);
